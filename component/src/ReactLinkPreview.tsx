@@ -31,7 +31,7 @@ const ReactLinkPreview = (
       website: string
     }
   } = {
-    link: 'https://dev.to',
+    link: 'https://relaychat.app',
     host: 'http://localhost:3000'
   }
 ) => {

@@ -2,10 +2,16 @@
   "name": "react-link-previewer",
   "version": "1.0.0",
   "main": "dist/index.cjs.js",
+  "description": "React component for previewing links. Used in Relay.",
   "browser": "dist/index.js",
   "author": "v1rtl",
   "source": "src/ReactLinkPreview.tsx",
   "module": "dist/index.module.js",
+  "repository": {
+    "type": "git",
+    "directory": "component",
+    "url": "https://github.com/relay-chat/react-link-previewer.git"
+  },
   "files": [
     "dist"
   ],
