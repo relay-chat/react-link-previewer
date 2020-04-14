@@ -1,6 +1,6 @@
 # react-link-previewer 📰
 
-Easily preview links on hover with page meta tags using a React component + Go service.
+Preview links with page meta tags using a React component + Go service.
 
 ## Features
 
