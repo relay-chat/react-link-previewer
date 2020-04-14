@@ -1,12 +1,16 @@
 # react-link-previewer 📰
 
-Service and a component for previewing links. Used in [Relay](https://relaychat.app/).
+Easily preview links on hover with page meta tags using a React component + Go service.
 
 ## Features
 
 - Client-side support
-- Written in TypeScript
-- Standalone service
+- Types (written in TypeScript)
+- Fast standalone service (written in Go)
+
+## Users
+
+- [RelayChat](https://relaychat.app/)
 
 ## Component
 
@@ -15,14 +19,17 @@ Service and a component for previewing links. Used in [Relay](https://relaychat.
 ```sh
 # yarn
 yarn add react-link-previewer
-# pnpm / npm
+# npm
 npm i react-link-previewer
+# pnpm
+pnpm i react-link-previewer
 ```
 
 ### Example
 
 ```jsx
 import React from 'react'
+import { render } from 'react-dom'
 import Preview from 'react-link-previewer'
 
 render(<Preview link="https://relaychat.app" />, document.getElementById('app'))
@@ -30,20 +37,9 @@ render(<Preview link="https://relaychat.app" />, document.getElementById('app'))
 
 ### Props
 
-```ts
-link: string;
-host?: string;
-classNames?: {
-    heading: string;
-    description: string;
-    image: string;
-    website: string;
-}
-```
-
 - **link** - link to a website
 - **host** - hostname of an HTTP metadata service
-- **classNames** - a list of classNames to be used in a component
+- **classNames** - a list of classNames to be used in a component: `heading`, `description`, `image` and `website`
 
 ## Service
 
