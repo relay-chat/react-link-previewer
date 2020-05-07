@@ -4,3 +4,4 @@ pnpm-lock.yaml
 .rts2_cache_cjs
 dist
 .cache
+.now

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, Component } from 'react'
 
 export interface LinkPreviewData {
   title?: string
@@ -15,44 +15,39 @@ export interface LinkPreviewData {
   }[]
 }
 
+type ReactLinkPreviewProps = {
+  link: string
+  host?: string
+  fetchOptions?: RequestInit
+  children?: (data: LinkPreviewData) => JSX.Element
+}
+
 const ReactLinkPreview = (
-  {
-    link,
-    host,
-    classNames,
-    ...props
-  }: {
-    link: string
-    host?: string
-    classNames?: {
-      heading: string
-      description: string
-      image: string
-      website: string
-    }
-  } = {
+  { link, host, children, fetchOptions }: ReactLinkPreviewProps = {
     link: 'https://relaychat.app',
-    host: 'http://localhost:3000'
+    host: 'https://react-link-previewer.now.sh/api/handler',
+    fetchOptions: {},
+    children: (data) => (
+      <div>
+        <h1>{data.title}</h1>
+        <strong>{data.website}</strong>
+        <span>{data.description}</span>
+        {data.images.map((img) => (
+          <img src={img.URL} height={img.Height} width={img.Width} alt={img.Alt} />
+        ))}
+      </div>
+    ),
   }
 ) => {
   const [data, setData] = useState<LinkPreviewData>()
 
   useEffect(() => {
-    fetch(`${host}?link=${link}`)
-      .then(res => res.json())
-      .then(json => setData(json))
+    fetch(`${host}?link=${link}`, fetchOptions)
+      .then((res) => res.json())
+      .then((json) => setData(json))
   })
 
-  return (
-    <div {...props}>
-      <h1 className={classNames.heading}>{data.title}</h1>
-      <strong className={classNames.website}>{data.website}</strong>
-      <span className={classNames.description}>{data.description}</span>
-      {data.images.map(img => (
-        <img className={classNames.image} src={img.URL} height={img.Height} width={img.Width} alt={img.Alt} />
-      ))}
-    </div>
-  )
+  return <>{children(data)}</>
 }
 
 export default ReactLinkPreview

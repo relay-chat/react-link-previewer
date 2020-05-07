@@ -1,9 +1,8 @@
-package main
+package service
 
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 	"net/http"
 
 	"github.com/otiai10/opengraph"
@@ -19,7 +18,8 @@ type resStruct struct {
 	Images      []*opengraph.OGImage `json:"images"`
 }
 
-func main() {
+// NewReactLinkPreviewService - create new
+func NewReactLinkPreviewService(origins []string) http.Handler {
 
 	handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 
@@ -58,13 +58,11 @@ func main() {
 	})
 
 	c := cors.New(cors.Options{
-		AllowedOrigins: []string{"moz-extension://40fec490-ea89-4b90-bff6-c9d215f1effd",
-			"chrome-extension://niifmlaakldeiifddnihjkgahaipjdmh",
-			"chrome-extension://jkkkbbddjbaciefiapbkogcgnfoompjj"},
+		AllowedOrigins:   origins,
 		AllowedMethods:   []string{"GET"},
 		AllowCredentials: false,
 		AllowedHeaders:   []string{"Content-Type", "Accept", "X-Requested-With"},
 	})
 
-	log.Fatal(http.ListenAndServe(":8080", c.Handler(handler)))
+	return c.Handler(handler)
 }
