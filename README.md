@@ -1,11 +1,13 @@
 # react-link-previewer 📰
 
-Preview links with page meta tags using a React component + Go service.
+work in progress...
+
+Preview links with page meta tags using a React hook + Go service.
 
 ## Features
 
 - ⚡ Client-side and server-side support
-- 🛠️ Component is written in TypeScript
+- 🛠️ Hook and component are written in TypeScript
 - 🚀 Fast standalone service (written in Go)
 
 ## Folks using react-link-previewer
@@ -25,9 +27,9 @@ npm i react-link-previewer
 pnpm i react-link-previewer
 ```
 
-### How the component works
+### How the hook works
 
-Component makes a request to a service (which is pre-deployed but you can set your own) and passes `link` (the link you want to preview, e.g. `https://dev.to`) as a query parameter, so we get a link looking like this:
+The hook makes a request to a service (which is pre-deployed but you can set your own) and passes `link` (the link you want to preview, e.g. `https://dev.to`) as a query parameter, so we get a link looking like this:
 
 ```js
 const url = `${host}?link=${link}`
@@ -37,7 +39,7 @@ Then the returned data, which we requested from the service, is passed to childr
 
 ### Props
 
-The component has these props:
+The hook has these parameters:
 
 - `host` - optional custom service url
 - `link` - link that you want to preview
@@ -45,55 +47,50 @@ The component has these props:
 
 ### Examples
 
-#### Default
+#### Basic
 
-By default, if not passing custom markup, like this:
+The hook is very simple. You pass the `link`, it returns the data, you put it in your layout.
 
 ```jsx
 import React from 'react'
-import { render } from 'react-dom'
-import Preview from 'react-link-previewer'
+import { useLinkPreviewer } from 'react-link-previewer'
 
-render(
-  <Preview link="https://relaychat.app" host="https://my-cool-deployed.service.com" />,
-  document.getElementById('app')
-)
-```
+const Link = () => {
+  const data = useLinkPreviewer({
+    link: 'https://relaychat.app'
+  })
 
-You'll get this component:
-
-```jsx
-<Preview link="https://relaychat.app" host="https://my-cool-deployed.service.com">
-  {(data) => (
+  return (
     <div>
       <h1>{data.title}</h1>
       <strong>{data.website}</strong>
       <span>{data.description}</span>
-      {data.images.map((img) => (
+      {data.images?.map((img) => (
         <img src={img.URL} height={img.Height} width={img.Width} alt={img.Alt} />
       ))}
     </div>
-  )}
-</Preview>
+  )
+}
 ```
 
-#### Custom layout
+#### Component
 
-If you want to add your custom layout to the link preview, the component passes data to children, so you can easily get this data and map to components:
+If you want to use a pre-made component, import `LinkPreview` instead. It extends hook parameters for props and inherits `<div>` props.
 
 ```jsx
-<Preview link="https://relaychat.app" host="https://my-cool-deployed.service.com">
-  {(data) => (
-    <Box>
-      <WebsiteTitle>{data.title}</WebsiteTitle>
-      <WebsiteName>{data.website}</WebsiteName>
-      <Description>{data.description}</Description>
-      {data.images.map((img) => (
-        <Image src={img.URL} height={img.Height} width={img.Width} alt={img.Alt} />
-      ))}
-    </Box>
-  )}
-</Preview>
+import React from 'react'
+import { LinkPreview } from 'react-link-previewer'
+
+const Link = () => (
+  <LinkPreview
+    link="https://relaychat.app"
+    style={{
+      color: 'red'
+    }}
+  >
+    click on me
+  </LinkPreview>
+)
 ```
 
 ## Service

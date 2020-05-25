@@ -14,9 +14,7 @@ func main() {
 	port := os.Getenv("PORT")
 
 	// Those are RelayChat origins, replace them with your own
-	origins := []string{"moz-extension://40fec490-ea89-4b90-bff6-c9d215f1effd",
-		"chrome-extension://niifmlaakldeiifddnihjkgahaipjdmh",
-		"chrome-extension://jkkkbbddjbaciefiapbkogcgnfoompjj"}
+	origins := []string{"*"}
 
 	s := service.NewReactLinkPreviewService(origins)
 

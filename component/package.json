@@ -18,18 +18,17 @@
   "types": "dist/types.d.ts",
   "license": "MIT",
   "devDependencies": {
-    "@types/jest": "^25.2.1",
     "@types/react": "^16.9.34",
     "@types/react-test-renderer": "^16.9.2",
     "bili": "^4.10.0",
-    "jest": "^26.0.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "rollup-plugin-typescript2": "^0.25.3",
     "typescript": "^3.8.3"
   },
   "scripts": {
-    "build": "bili src/ReactLinkPreview.tsx --format cjs --format esm"
+    "build": "bili src/ReactLinkPreview.tsx --format cjs --format esm",
+    "test": "jest"
   },
   "dependencies": {
     "react-test-renderer": "^16.13.1"
