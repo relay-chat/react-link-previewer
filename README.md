@@ -2,19 +2,19 @@
 
 work in progress...
 
-Preview links with page meta tags using a React hook + Go service.
+Preview links with page meta tags using React hook + Go service.
 
 ## Features
 
 - ⚡ Client-side and server-side support
-- 🛠️ Hook and component are written in TypeScript
+- 🛠️ Hook is written in TypeScript
 - 🚀 Fast standalone service (written in Go)
 
 ## Folks using react-link-previewer
 
 - [RelayChat](https://relaychat.app/)
 
-## Component
+## Frontend
 
 ### Installation
 
@@ -71,26 +71,6 @@ const Link = () => {
     </div>
   )
 }
-```
-
-#### Component
-
-If you want to use a pre-made component, import `LinkPreview` instead. It extends hook parameters for props and inherits `<div>` props.
-
-```jsx
-import React from 'react'
-import { LinkPreview } from 'react-link-previewer'
-
-const Link = () => (
-  <LinkPreview
-    link="https://relaychat.app"
-    style={{
-      color: 'red'
-    }}
-  >
-    click on me
-  </LinkPreview>
-)
 ```
 
 ## Service

@@ -5,4 +5,3 @@ pnpm-lock.yaml
 dist
 .cache
 .now
-main
