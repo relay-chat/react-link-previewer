@@ -1,6 +1,6 @@
 {
   "name": "react-link-previewer",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "main": "dist/index.js",
   "description": "React component for previewing links. Used in Relay.",
   "author": "v1rtl",
@@ -27,7 +27,8 @@
     "typescript": "^3.8.3"
   },
   "scripts": {
-    "build": "bili index.ts --format cjs --format esm",
+    "build": "bili src/index.tsx --format cjs --format esm",
+    "prepare": "yarn build",
     "test": "jest",
     "docz:dev": "docz dev",
     "docz:build": "docz build",
