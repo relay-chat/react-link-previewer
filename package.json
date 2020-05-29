@@ -1,6 +1,6 @@
 {
   "name": "react-link-previewer",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "main": "dist/index.js",
   "description": "React component for previewing links. Used in Relay.",
   "author": "v1rtl",
@@ -31,7 +31,7 @@
     "prepare": "yarn build",
     "test": "jest",
     "docz:dev": "docz dev",
-    "docz:build": "docz build",
+    "now-build": "docz build",
     "docz:serve": "docz build && docz serve"
   },
   "dependencies": {

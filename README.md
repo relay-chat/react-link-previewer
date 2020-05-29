@@ -1,6 +1,14 @@
-# react-link-previewer 📰
+![](/cover.jpeg)
+
+# react-link-previewer ⚡
+
+![npm type definitions](https://img.shields.io/npm/types/react-link-previewer?style=flat-square) ![npm](https://img.shields.io/npm/v/react-link-previewer?style=flat-square) ![NPM](https://img.shields.io/npm/l/react-link-previewer?style=flat-square) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/react-link-previewer?style=flat-square)
 
 Preview links with page meta tags using React component / hook + Go service.
+
+## Docs
+
+Docs with examples and advanced usage are [here](https://react-link-previewer.now.sh/).
 
 ## Features
 
@@ -8,9 +16,20 @@ Preview links with page meta tags using React component / hook + Go service.
 - 🛠️ Hook and component are written in TypeScript
 - 🚀 Fast standalone service (written in Go)
 
-## Folks using react-link-previewer
+## Example
 
-- [RelayChat](https://relaychat.app/)
+Here's a basic usage example (for more see [docs](https://react-link-previewer.now.sh/)):
+
+```jsx
+import React from 'react'
+import { LinkPreview } from 'react-link-previewer'
+
+function App() {
+  return <LinkPreview link="https://relaychat.app">RelayChat</LinkPreview>
+}
+
+export default App
+```
 
 ## Installation
 
@@ -23,13 +42,9 @@ npm i react-link-previewer
 pnpm i react-link-previewer
 ```
 
-## Docs
+## Folks using react-link-previewer
 
-coming soon...
-
-## License
-
-MIT
+- [RelayChat](https://relaychat.app/)
 
 ## Author
 
