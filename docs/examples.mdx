@@ -1,0 +1,33 @@
+---
+name: 'Examples'
+---
+
+import { useState } from 'react'
+import { LinkPreview, useLinkPreview } from '../index'
+import { Playground } from 'docz'
+import '../style.css'
+
+# Component example
+
+`react-link-previewer` has a built in component that shows a link preview on hover.
+
+<Playground>
+  <LinkPreview link="https://relaychat.app">RelayChat</LinkPreview> (hover to see preview)
+</Playground>
+
+# Hook example
+
+In case you want to build your own component there is a hook for it which returns an object containing error and data objects.
+
+<Playground>
+  {() => {
+    const {data, error } = useLinkPreview({
+      link: 'https://relaychat.app'
+    })
+    return (
+      <>
+       {data && <span>site title: {data.title}</span>}
+      </>
+    )
+  }}
+</Playground>
