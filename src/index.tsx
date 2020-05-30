@@ -25,7 +25,6 @@ export type ReactLinkPreviewProps = {
 export type ReactLinkPreviewComponentProps = ReactLinkPreviewProps & HTMLAttributes<HTMLAnchorElement>
 
 export const useLinkPreview = ({
-  href = 'https://google.com',
   host = 'https://og-service.herokuapp.com/',
   fetchOptions = {}
 }: ReactLinkPreviewProps) => {

@@ -12,7 +12,7 @@ import '../src/style.css'
 `react-link-previewer` has a built in component that shows a link preview on hover.
 
 <Playground>
-  <LinkPreview link="https://relaychat.app">RelayChat</LinkPreview> (hover to see preview)
+  <LinkPreview href="https://relaychat.app">RelayChat</LinkPreview> (hover to see preview)
 </Playground>
 
 # Hook example
@@ -22,7 +22,7 @@ In case you want to build your own component there is a hook for it which return
 <Playground>
   {() => {
     const {data, error } = useLinkPreview({
-      link: 'https://relaychat.app'
+      href: 'https://relaychat.app'
     })
     return (
       <>
