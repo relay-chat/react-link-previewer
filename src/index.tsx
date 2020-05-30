@@ -17,7 +17,7 @@ export type LinkPreviewData = Partial<{
 }>
 
 export type ReactLinkPreviewProps = {
-  link: string
+  href: string
   host?: string
   fetchOptions?: RequestInit
 }
@@ -25,7 +25,7 @@ export type ReactLinkPreviewProps = {
 export type ReactLinkPreviewComponentProps = ReactLinkPreviewProps & HTMLAttributes<HTMLAnchorElement>
 
 export const useLinkPreview = ({
-  link = 'https://google.com',
+  href = 'https://google.com',
   host = 'https://og-service.herokuapp.com/',
   fetchOptions = {}
 }: ReactLinkPreviewProps) => {
@@ -33,27 +33,25 @@ export const useLinkPreview = ({
   const [error, setError] = useState<Error>()
 
   useEffect(() => {
-    fetch(`${host}?link=${link}`, fetchOptions)
+    fetch(`${host}?link=${href}`, fetchOptions)
       .then((res) => res.json())
       .then((json) => setData(json))
       .catch((e) => setError(e))
   }, [])
 
-  console.log({ data, error })
-
   return { data, error }
 }
 
-export const LinkPreview = ({ children, link, host, fetchOptions, ...props }: ReactLinkPreviewComponentProps) => {
+export const LinkPreview = ({ children, href, host, fetchOptions, ...props }: ReactLinkPreviewComponentProps) => {
   const { data, error } = useLinkPreview({
-    link,
+    href,
     host,
     fetchOptions
   })
 
   return (
     <div className={cx('link-preview', props.className)}>
-      <a {...props} href={link}>
+      <a {...props} href={href}>
         {children}
       </a>
       {data && (
