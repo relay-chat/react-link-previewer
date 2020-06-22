@@ -1,5 +1,6 @@
 {
   "name": "react-link-previewer",
+  "private": true,
   "version": "1.0.4",
   "main": "dist/index.js",
   "description": "React component for previewing links. Used in Relay.",
@@ -17,25 +18,13 @@
   "license": "MIT",
   "devDependencies": {
     "@types/classnames": "^2.2.10",
-    "@types/react": "^16.9.34",
+    "@types/react": "^16.9.38",
     "@types/react-test-renderer": "^16.9.2",
-    "bili": "^4.10.0",
-    "docz": "^2.3.1",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "rollup-plugin-typescript2": "^0.25.3",
-    "typescript": "^3.8.3"
+    "jest": "^26.0.1",
+    "react-test-renderer": "^16.13.1",
+    "typescript": "^3.9.5"
   },
   "scripts": {
-    "build": "bili src/index.tsx --format cjs --format esm",
-    "prepare": "yarn build",
-    "test": "jest",
-    "docz:dev": "docz dev",
-    "now-build": "docz build",
-    "docz:serve": "docz build && docz serve"
-  },
-  "dependencies": {
-    "classnames": "^2.2.6",
-    "react-test-renderer": "^16.13.1"
+    "test": "jest"
   }
 }

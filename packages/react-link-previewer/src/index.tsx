@@ -18,15 +18,17 @@ export type LinkPreviewData = Partial<{
 
 export type ReactLinkPreviewProps = {
   href: string
-  host?: string
-  fetchOptions?: RequestInit
-}
+} & Partial<{ host: string; fetchOptions: RequestInit }>
 
-export type ReactLinkPreviewComponentProps = ReactLinkPreviewProps & HTMLAttributes<HTMLAnchorElement>
+export type ReactLinkPreviewComponentProps = ReactLinkPreviewProps &
+  HTMLAttributes<HTMLAnchorElement> & {
+    external?: boolean
+  }
 
 export const useLinkPreview = ({
   href,
   host = 'https://og-service.herokuapp.com/',
+
   fetchOptions = {}
 }: ReactLinkPreviewProps) => {
   const [data, setData] = useState<LinkPreviewData>()
@@ -34,31 +36,45 @@ export const useLinkPreview = ({
 
   useEffect(() => {
     fetch(`${host}?link=${href}`, fetchOptions)
-      .then((res) => res.json())
-      .then((json) => setData(json))
-      .catch((e) => setError(e))
+      .then(res => res.json())
+      .then(json => setData(json))
+      .catch(e => setError(e))
   }, [])
 
   return { data, error }
 }
 
-export const LinkPreview = ({ children, href, host, fetchOptions, ...props }: ReactLinkPreviewComponentProps) => {
+export const LinkPreview = ({
+  children,
+  href,
+  host,
+  fetchOptions,
+  external,
+  ...props
+}: ReactLinkPreviewComponentProps) => {
   const { data, error } = useLinkPreview({
     href,
     host,
     fetchOptions
   })
 
+  const [visible, setVisible] = useState(false)
+
   return (
-    <div className={cx('link-preview', props.className)}>
-      <a {...props} href={href}>
+    <div
+      onMouseLeave={() => setVisible(false)}
+      onMouseOver={() => setVisible(true)}
+      className={cx('link-preview', props.className)}>
+      <a {...props} href={href} rel={external ? 'noopener norefferer' : ''} target={external ? '_blank' : '_self'}>
         {children}
       </a>
       {data && (
-        <div aria-hidden={true}>
-          <h2>{data.title}</h2>
+        <div onMouseOver={() => setVisible(true)} className={visible ? 'visible' : 'hidden'} aria-hidden={true}>
+          <a {...props} href={href}>
+            <h2>{data.title}</h2>
+          </a>
           <p>{data.description}</p>
-          {data.images?.map((img) => (
+          {data.images?.map(img => (
             <img src={img.URL} height={img.Height} width={img.Width} alt={img.Alt} />
           ))}
         </div>

@@ -1,0 +1,74 @@
+# react-link-previewer
+
+![npm type definitions](https://img.shields.io/npm/types/react-link-previewer?style=flat-square) ![npm](https://img.shields.io/npm/v/react-link-previewer?style=flat-square) ![NPM](https://img.shields.io/npm/l/react-link-previewer?style=flat-square) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/react-link-previewer?style=flat-square)
+
+Preview links with page meta tags using React component / hook + [Go service](https://github.com/talentlessguy/og-service/).
+
+## Features
+
+- ⚡ Client-side and server-side support
+- 🛠️ Hook and component are written in TypeScript
+- 🚀 Fast standalone service (written in Go)
+
+## Installation
+
+```shell
+# yarn
+yarn add react-link-previewer
+# npm
+npm i react-link-previewer
+# pnpm
+pnpm i react-link-previewer
+```
+
+## How the frontend works
+
+The hook makes a request to a service and passes link as a query parameter.
+
+Then we get a link looking like this:
+
+```js
+const url = `${host}?link=${link}`
+```
+
+Then the returned data, which we requested from the service, is passed to children. You can use it to preview your link.
+
+## Usage
+
+### Hook
+
+`react-link-previewer` provides a hook for fetching link preview and using the returned data in your link.
+
+```jsx
+const { data, error } = useLinkPreview({
+  href: 'https://relaychat.app', // link you want to preview
+  host: 'https://og-service.herokuapp.com', // optional custom link data fetching endpoint
+  fetchOptions: {} // optional fetch paramaters for making the request
+})
+return <>{data && <span>site title: {data.title}</span>}</>
+```
+
+### Component
+
+The library contains a pre-made component with styling and data fetching. Data fetching happens client-side.
+
+```jsx
+import React from 'react'
+import { LinkPreview } from 'react-link-previewer'
+import 'react-link-previewer/src/style.css'
+
+const Link = props => (
+  <LinkPreview
+    external={false} // open external resource in the new tab. default: false
+    href="https://relaychat.app" // link you want to preview
+    host="https://og-service.herokuapp.com" // optional custom link data fetching endpoint
+    fetchOptions={} // optional fetch paramaters for making the request
+  />
+)
+```
+
+The component can be customized by including custom css.
+
+## Author
+
+[v1rtl](https://v1rtl.site)

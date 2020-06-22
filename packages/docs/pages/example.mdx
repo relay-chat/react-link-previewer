@@ -1,0 +1,304 @@
+# Example article with link previews
+
+Today we'll build a simple news app using [News API](https://newsapi.org), [Preact](https://preactjs.com) as UI library, [Styled Components](https://www.styled-components.com/) for styling and [DinoQL](https://github.com/victorvoid/dinoql) for parsing data.
+
+## Get API Key
+
+Register on [News API](https://newsapi.org)
+
+Then go to your [account](https://newsapi.org/account) and take the key.
+
+## Setup the project
+
+Just execute all these commands in your terminal.
+
+```shell
+mkdir news-app
+cd news-app
+yarn init -y
+yarn add preact@beta dinoql dotenv styled-components
+yarn add -D @babel/core @babel/preset-env @babel/preset-react parcel-bundler
+```
+
+Here we create a directory where we will work, then initialize a new node.js project and add dependencies.
+
+Also you should copy the key from your account and put it into .env file like this:
+
+```
+TOKEN=1234567890
+```
+
+To make Preact work with other React libraries (`styled-components` in our case), we need to write an alias for Parcel in our `package.json` file:
+
+```json
+"alias": {
+  "react": "preact/compat",
+  "react-dom": "preact/compat"
+}
+```
+
+Sometimes Babel is glitchy without a config, so better to create a `.babelrc` file to list our presets:
+
+```json
+{
+  "presets": ["@babel/preset-env", "@babel/preset-react"]
+}
+```
+
+And for convenience, create a new npm script to launch Parcel automatically on port 80 with opening a new tab:
+
+```json
+"scripts": {
+  "dev": "parcel index.html --port 80 --open"
+}
+```
+
+As you can see we set target to `index.html`. That's because Parcel needs an html file to attach a bundled script there. So you should create an `index.html` file:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>News App</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script src="index.js"></script>
+  </body>
+</html>
+```
+
+That's all we need to make everything work, now try `yarn dev`.
+
+## How it will work
+
+First, our app fetches data from API. Then this data is parsed with DinoQL. After that, we put our parsed values into layout.
+
+## Describing the stack
+
+**Why Preact?** It is 2x smaller than React so it is faster.
+
+**Why DinoQL?** Dealing with pure JSON is not comfortable enough. DinoQL parses objects in a GraphQL manner.
+
+**Why styled-components?** Because pure CSS sometimes mixes up and produces weird layout.
+
+## Let's code!
+
+### Checking `process.env.TOKEN`
+
+First, we need to setup `dotenv` to get TOKEN environment variable.
+
+```js
+import { config } from 'dotenv'
+config()
+console.log(process.env.TOKEN)
+```
+
+Look at the console, it should output the key. If it works, we can begin writing components.
+
+### Components
+
+Because some styles are applied by default, we need to change them using `createGlobalStyle` from Styled Components:
+
+```js
+import React from 'react'
+import { createGlobalStyle } from 'styled-components'
+import { config } from 'dotenv'
+config()
+
+const GlobalStyle = createGlobalStyle`
+  body {
+    margin: 0;
+    font-family: sans-serif;
+    height: 100vh;
+    display: grid;
+    place-items: center
+  }
+```
+
+Here we removed default margin and set our content position to center.
+
+Let's style components. You can do it as you want, I used these styles:
+
+```js
+const Results = styled.ul`
+  list-style-type: none;
+  font-family: sans-serif;
+  width: 70vw;
+`
+
+const Input = styled.input`
+  font-size: calc(100% + 1.4vw);
+  border: 3px solid black;
+  padding: 0.2em;
+`
+
+const Header = styled.h1`
+  font-size: calc(100% + 4vw);
+`
+```
+
+Styling is finished, now we will write the main `<App />` component.
+
+### App itself
+
+We'll use two states - one for input, another for articles we get from News API. So when something new is in input field, data is automatically fetched. "Automatic fetching" is called a **side effect** in React. For applying side effects when state is changed, we use `useEffect` hook.
+
+```js
+import React, { useEffect, useState } from 'react'
+
+const App = () => {
+  const [results, setResults] = useState({ articles: []})
+  // Our first search request will be "JavaScript"
+  const [val, setVal] = useState('JavaScript')
+
+  useEffect(() => {
+    fetch(`https://newsapi.org/v2/everything?q=${val}&sortBy=popularity&apiKey=${process.env.TOKEN}`)
+      .then(res => res.json())
+```
+
+According to [docs](https://newsapi.org/docs/get-started), we'll get this kind of JSON:
+
+```json
+{
+
+    "status": "ok",
+    "totalResults": 1291,
+    "articles": [
+        {
+            "source": {
+                "id": "engadget",
+                "name": "Engadget"
+            },
+            "author": "Steve Dent",
+            "title": "Bullet's captioned snippets make podcasts a lot more shareable",
+            "description": "While becoming more and more popular, podcasts are far less share-friendly than videos because of their long-form and audio-only nature. An Adelaide-based company aims to change that with a new iOS app called Bullet. It lets you create 30 second video snippet…",
+            "url": "https://www.engadget.com/2019/07/02/bullet-captioned-podcast-snippets-sharing/",
+            "urlToImage": "https://o.aolcdn.com/images/dims?thumbnail=1200%2C630&quality=80&image_uri=https%3A%2F%2Fo.aolcdn.com%2Fimages%2Fdims%3Fcrop%3D1600%252C800%252C0%252C0%26quality%3D85%26format%3Djpg%26resize%3D1600%252C800%26image_uri%3Dhttps%253A%252F%252Fs.yimg.com%252Fos%252Fcreatr-uploaded-images%252F2019-07%252F51e730f0-9caa-11e9-be7b-654f0cedfaca%26client%3Da1acac3e1b3290917d92%26signature%3D02ace874d9c0c44e554446608751cf8e87646865&client=amp-blogside-v2&signature=3e6d762e7b2087650d191a9a60b114f4753610aa",
+            "publishedAt": "2019-07-02T12:21:00Z",
+            "content": "Once you find a clip you want to share, you can snip up to 30 seconds of it and generate a captioned video clip, then share it to your social media app of choice. People are more likely to watch a captioned clip, as they can do so without the need to listen t… [+742 chars]"
+        },
+        {
+            "source": {
+                "id": "engadget",
+                "name": "Engadget"
+            },
+            "author": "Jon Fingas",
+            "title": "Xiaomi subtly clones Apple's Memoji with 'Mimoji'",
+            "description": "Xiaomi has a long history of shadowing Apple's moves, and that now includes one of its cutesier inventions: Memoji. As part of the launch of its CC9 phone series, Xiaomi has introduced \"Mimoji\" that are a not-so-subtle riff on Apple's 3D avatars. While Apple …",
+            "url": "https://www.engadget.com/2019/07/02/xiaomi-clones-apple-memoji/",
+            "urlToImage": "https://o.aolcdn.com/images/dims?thumbnail=1200%2C630&quality=80&image_uri=https%3A%2F%2Fo.aolcdn.com%2Fimages%2Fdims%3Fcrop%3D1600%252C900%252C0%252C0%26quality%3D85%26format%3Djpg%26resize%3D1600%252C900%26image_uri%3Dhttps%253A%252F%252Fs.yimg.com%252Fos%252Fcreatr-uploaded-images%252F2019-07%252F2817cd90-9cd0-11e9-97ed-e9101e10fd7b%26client%3Da1acac3e1b3290917d92%26signature%3D16dbb4808f1297da2f593227e7594ec4ce4f33bc&client=amp-blogside-v2&signature=11e30001f6bcaad06cd423747820aee56a484158",
+            "publishedAt": "2019-07-02T14:51:00Z",
+            "content": "As it stands, the phones are closer in appearance to Huawei's P-series than anything from Cupertino, right down to the vertical lettering, in-screen fingerprint reader and teardrop camera notch on the front. They're mostly upper-mid-range devices, though. The… [+792 chars]"
+        },
+
+        {
+            "source": {
+                "id": "mashable",
+                "name": "Mashable"
+            },
+            "author": "Karissa Bell",
+            "title": "Samsung sets a date for its big Galaxy Note 10 reveal",
+            "description": "We still aren't entirely sure what's going on with the Galaxy Fold, but we now know when Samsung will show off its next big flagship phone. The company sent out invitations for its next Unpacked event, set for Aug. 7, when Samsung is expected to reveal the Ga…",
+            "url": "https://mashable.com/article/samsung-unpacked-2019-galaxy-note-10/",
+            "urlToImage": "https://mondrian.mashable.com/2019%252F07%252F02%252F3b%252Fc34c2d2cd202486c8ed700ab16bc3cfe.dc6a1.jpg%252F1200x630.jpg?signature=TMYiItfm9b-wNHRwNI4gaKD3DjA=",
+            "publishedAt": "2019-07-02T01:00:00Z",
+            "content": "We still aren't entirely sure what's going on with the Galaxy Fold, but we now know when Samsung will show off its next big flagship phone.\r\nThe company sent out invitations for its next Unpacked event, set for Aug. 7, when Samsung is expected to reveal the G… [+2005 chars]"
+        }
+```
+
+It is quite uneasy to manipulate. And we're lucky that we only deal with 2-level JSON, imagine if this JSON is 5 or 7-level deep! That's why we'll use DinoQL to parse data to get only the data we need. It is quite simple, we just take the raw data as a first argument, and then write our GraphQL-like query:
+
+```js
+const App = () => {
+  const [results, setResults] = useState({ articles: []})
+  const [val, setVal] = useState('JavaScript')
+
+  useEffect(() => {
+    fetch(`https://newsapi.org/v2/everything?q=${val}&sortBy=popularity&apiKey=${process.env.TOKEN}`)
+      .then(res => res.json())
+      .then(data => setResults(
+        dql(data)`
+          totalResults
+          articles {
+            title
+            author
+            description
+            url
+          }
+        `
+        ))
+  }, [val])
+```
+
+So, every time input value changes, we fetch data again and parse only things we need - total results of all the articles; title, author, description and url for each article.
+
+For layout we'll use our styled components that we wrote before and state values too:
+
+```jsx
+const App = () => {
+  const [results, setResults] = useState({ articles: [] })
+  const [val, setVal] = useState('JavaScript')
+
+  useEffect(() => {
+    fetch(`https://newsapi.org/v2/everything?q=${val}&sortBy=popularity&apiKey=${process.env.TOKEN}`)
+      .then(res => res.json())
+      .then(data =>
+        setResults(
+          dql(data)`
+          totalResults
+          articles {
+            title
+            author
+            description
+            url
+          }
+        `
+        )
+      )
+  }, [val])
+
+  return (
+    <div>
+      <GlobalStyle />
+      <Header>News App 📰</Header>
+      <Input value={val} onInput={e => setVal(e.target.value)} />
+      <h4>Total results: {results.totalResults}</h4>
+      <Results>
+        {results.articles.map(item => (
+          <li>
+            <h3>{item.title}</h3>
+            <h5>by {item.author}</h5>
+            <p>{item.description}</p>
+            <a target="_blank" href={item.url}>
+              Read more
+            </a>
+          </li>
+        ))}
+      </Results>
+    </div>
+  )
+}
+```
+
+Great! We wrote our news app. Only need to render it in our container:
+
+```jsx
+render(<App />, document.getElementById('app'))
+```
+
+Our app works fine. The only problem is layout changes after the content loads. But you can pass some "lorem ipsum" articles to initial state of `results`:
+
+```js
+const [results, setResults] = useState({ articles: [
+  {
+    // Write your test article here
+]})
+```
+
+## Conclusion
+
+We made a simple web app using existing APIs. There a lot of interesting APIs that can be used as a skeleton for your app. I picked both the simplest and most interesting API I could find.

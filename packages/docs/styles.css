@@ -1,0 +1,38 @@
+body,
+html {
+  font-family: sans-serif;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: Inter, sans-serif;
+}
+h1 {
+  font-size: calc(3vw + 2rem);
+  margin: 0;
+}
+
+#__next {
+  padding-top: 1rem;
+  width: 60vw;
+  margin: 0 auto;
+}
+
+@media (max-width: 800px) {
+  #__next {
+    width: 70vw;
+  }
+}
+
+@media (max-width: 600px) {
+  #__next {
+    width: 80vw;
+  }
+}
+
+pre {
+  overflow-x: auto;
+}

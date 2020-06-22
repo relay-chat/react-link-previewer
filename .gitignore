@@ -1,9 +1,9 @@
 node_modules/
 yarn.lock
-pnpm-lock.yaml
 .rts2_cache_cjs
 dist
 .cache
 .now
 .docz
 .vercel
+.next
