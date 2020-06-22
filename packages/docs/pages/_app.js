@@ -12,6 +12,10 @@ const App = ({ Component, pageProps }) => {
     <>
       <header>
         <nav>
+          <a href="https://github.com/relay-chat/react-link-previewer" target="_blank" rel="noopener noreferrer">
+            GitHub
+          </a>
+          {' | '}
           <Link href="/">
             <a>Index</a>
           </Link>

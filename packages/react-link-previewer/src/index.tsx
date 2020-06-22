@@ -65,7 +65,7 @@ export const LinkPreview = ({
       onMouseLeave={() => setVisible(false)}
       onMouseOver={() => setVisible(true)}
       className={cx('link-preview', props.className)}>
-      <a {...props} href={href} rel={external ? 'noopener norefferer' : ''} target={external ? '_blank' : '_self'}>
+      <a {...props} href={href} rel={external ? 'noopener noreferrer' : ''} target={external ? '_blank' : '_self'}>
         {children}
       </a>
       {data && (
