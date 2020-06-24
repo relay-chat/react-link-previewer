@@ -1,4 +1,4 @@
-![](rlp.jpg)
+<img src="rlp.jpg" width="600px" />
 
 # react-link-previewer :mag_right:
 
