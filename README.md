@@ -1,5 +1,7 @@
 # react-link-previewer :mag_right:
 
+![](rlp.jpg)
+
 ![npm type definitions](https://img.shields.io/npm/types/react-link-previewer?style=flat-square) ![npm](https://img.shields.io/npm/v/react-link-previewer?style=flat-square) ![NPM](https://img.shields.io/npm/l/react-link-previewer?style=flat-square) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/react-link-previewer?style=flat-square)
 
 Preview links with page meta tags using React component / hook + Go service.
