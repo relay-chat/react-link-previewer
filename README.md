@@ -2,7 +2,7 @@
 
 # react-link-previewer :mag_right:
 
-![npm type definitions](https://img.shields.io/npm/types/react-link-previewer?style=flat-square) ![npm](https://img.shields.io/npm/v/react-link-previewer?style=flat-square) ![NPM](https://img.shields.io/npm/l/react-link-previewer?style=flat-square) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/react-link-previewer?style=flat-square)
+[![npm type definitions](https://img.shields.io/npm/types/react-link-previewer?style=flat-square)](https://www.npmjs.com/package/react-link-previewer) [![npm](https://img.shields.io/npm/v/react-link-previewer?style=flat-square)](https://www.npmjs.com/package/react-link-previewer) [![NPM](https://img.shields.io/npm/l/react-link-previewer?style=flat-square)](https://github.com/relay-chat/react-link-previewer/blob/master/LICENSE) [![npm bundle size](https://img.shields.io/bundlephobia/minzip/react-link-previewer?style=flat-square)](https://www.npmjs.com/package/react-link-previewer)
 
 Preview links with page meta tags using React component / hook + [Go service](https://github.com/talentlessguy/og-service/).
 
