@@ -69,7 +69,12 @@ export const LinkPreview = ({
         {children}
       </a>
       {data && (
-        <div onMouseOver={() => setVisible(true)} className={visible ? 'visible' : 'hidden'} aria-hidden={true}>
+        <div
+          onTouchStart={() => setVisible(true)}
+          onTouchCancel={() => setVisible(false)}
+          onMouseOver={() => setVisible(true)}
+          className={visible ? 'visible' : 'hidden'}
+          aria-hidden={true}>
           <a {...props} href={href}>
             <h2>{data.title}</h2>
           </a>
