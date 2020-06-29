@@ -36,7 +36,7 @@ importers:
       next: ^9.4.4
       react: ^16.13.1
       react-dom: ^16.13.1
-      react-link-previewer: 'workspace:^1.0.6'
+      react-link-previewer: 'workspace:^1.0.8'
       typeface-inter: ^3.12.0
   packages/react-link-previewer:
     dependencies:
